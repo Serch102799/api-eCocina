@@ -1,10 +1,11 @@
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // Usamos la variable de entorno DATABASE_URL
-  ssl: {
-    rejectUnauthorized: false, // Asegúrate de que el ssl esté habilitado
-  },
+  user: 'postgres',
+  host: 'localhost',
+  database: 'eCocina',
+  password: 'Carrillo10',
+  port: 5432, 
 });
 
 module.exports = pool;

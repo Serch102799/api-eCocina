@@ -5,6 +5,64 @@ const router = express.Router();
 
 /**
  * @swagger
+ * /api/usuarios/login:
+ *   post:
+ *     summary: Iniciar sesión de un usuario
+ *     tags: [Usuarios]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               contrasena:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Inicio de sesión exitoso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id_usuario:
+ *                   type: integer
+ *                 nombre:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *                 rol_id:
+ *                   type: integer
+ *       401:
+ *         description: Credenciales inválidas
+ */
+router.post('/login', async (req, res) => {
+  const { email, contrasena } = req.body;
+
+  try {
+    const result = await pool.query(
+      'SELECT id_usuario, nombre, email, rol_id FROM Usuarios WHERE email = $1 AND contrasena = $2',
+      [email, contrasena]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(401).json({ message: 'Credenciales inválidas' });
+    }
+
+    // Usuario encontrado
+    res.json({ message: 'Exito', usuario: result.rows[0] });
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error);
+    res.status(500).json({ message: 'Error al iniciar sesión' });
+  }
+});
+
+
+/**
+ * @swagger
  * tags:
  *   name: Usuarios
  *   description: API para gestionar usuarios

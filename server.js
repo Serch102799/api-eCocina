@@ -10,6 +10,7 @@ const detallePedidoRoutes = require('./routes/detallePedido');
 const pedidosRoutes = require('./routes/pedidos');
 const rolesRoutes = require('./routes/roles');
 const usuariosRoutes = require('./routes/usuarios');
+const usuariosRouter = require('./routes/usuarios');
 
 const app = express();
 const port = 3000;
@@ -17,12 +18,15 @@ const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
+
+
 app.use('/api/productos', productosRoutes);
 app.use('/api/categorias', categoriasRoutes);
 app.use('/api/detallePedido', detallePedidoRoutes);
 app.use('/api/pedidos', pedidosRoutes);
 app.use('/api/roles', rolesRoutes);
 app.use('/api/usuarios', usuariosRoutes);
+app.use('/api/usuarios', usuariosRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
